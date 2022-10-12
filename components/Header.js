@@ -1,14 +1,23 @@
 import styled from "styled-components";
 import { TbFish } from "react-icons/tb";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Header() {
+  const { pathname } = useRouter();
   return (
     <StyledHeader>
       <FishIcon size="4rem" />
       <StyledNavigation>
-        <Anchor>Startseite</Anchor>
-        <Anchor>Produkte</Anchor>
-        <Anchor>Kategorien</Anchor>
+        <Link href="/" passHref>
+          <Anchor active={pathname === "/"}>Startseite</Anchor>
+        </Link>
+        <Link href="/products" passHref>
+          <Anchor active={pathname === "/products"}>Produkte</Anchor>
+        </Link>
+        <Link href="/categories" passHref>
+          <Anchor active={pathname === "/categories"}>Kategorien</Anchor>
+        </Link>
       </StyledNavigation>
     </StyledHeader>
   );
@@ -21,7 +30,8 @@ const FishIcon = styled(TbFish)`
 `;
 
 const Anchor = styled.a`
-  color: var(--text-secondary);
+  color: green;
+  text-decoration: ${({ active }) => (active ? "underline" : "none")};
 
   &:hover {
     cursor: pointer;
