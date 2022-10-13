@@ -1,19 +1,26 @@
 import GridList from "../../components/GridList";
 import Link from "next/link";
+import { getAllCategories } from "../../services/categoriesServices";
 
-export default function Categories() {
+export async function getStaticProps() {
+  const categories = await getAllCategories();
+  return {
+    props: { categories },
+  };
+}
+
+export default function Categories({ categories }) {
   return (
     <>
       <h1>Categories</h1>
       <p>Liste aller Kategorien</p>
-  <GridList>
-    <li>
-      <Link href="/categories/meerwasser">Meerwasser</Link>
-    </li>
-    <li>
-      <Link href="/categories/muscheln">Muscheln</Link>
-    </li>
-  </GridList>
+      <GridList>
+        {categories.map((category) => (
+          <li key={category.id}>
+            <Link href={`/categories/${category.id}`}>{category.name}</Link>
+          </li>
+        ))}
+      </GridList>
     </>
   );
 }

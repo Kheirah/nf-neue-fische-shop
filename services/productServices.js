@@ -57,10 +57,15 @@ const products = [
   },
 ];
 
-export async function getAllProducts() {
-  return products;
+export function getAllProducts() {
+  const promise = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(products);
+    }, 2000);
+  });
+  return promise;
 }
 
-export async function getProductById(id) {
+export function getProductById(id) {
   return products.find((product) => product.id === id);
 }
