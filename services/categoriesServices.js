@@ -1,45 +1,24 @@
-const categories = [
-  {
-    id: "1",
-    name: "Süßwasser",
-    description:
-      "Bewohner von Binnengewässern wie Flüsse und Seen. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum quaerat ea sint ipsum nisi recusandae corrupti ab possimus eveniet voluptate eaque ullam quas voluptatem omnis quod, natus, non eum assumenda.",
-  },
-  {
-    id: "2",
-    name: "Meerwasser",
-    description:
-      "Fühlen sich in Salzwasser wohl. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum quaerat ea sint ipsum nisi recusandae corrupti ab possimus eveniet voluptate eaque ullam quas voluptatem omnis quod, natus, non eum assumenda.",
-  },
-  {
-    id: "3",
-    name: "Muscheln",
-    description:
-      "Harte Schale, weicher Kern. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum quaerat ea sint ipsum nisi recusandae corrupti ab possimus eveniet voluptate eaque ullam quas voluptatem omnis quod, natus, non eum assumenda.",
-  },
-  {
-    id: "4",
-    name: "Korallen und Blumentiere",
-    description:
-      "Sehen hübsch aus. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum quaerat ea sint ipsum nisi recusandae corrupti ab possimus eveniet voluptate eaque ullam quas voluptatem omnis quod, natus, non eum assumenda.",
-  },
-  {
-    id: "5",
-    name: "Wirbellose",
-    description:
-      "Seesterne, Krill und Krebstiere. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum quaerat ea sint ipsum nisi recusandae corrupti ab possimus eveniet voluptate eaque ullam quas voluptatem omnis quod, natus, non eum assumenda.",
-  },
-];
+import dbConnect from "../lib/dbConnect";
+import Category from "../models/Category";
 
-export function getAllCategories() {
-  const promise = new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(categories);
-    }, 2000);
-  });
-  return promise;
+export async function getAllCategories() {
+  await dbConnect();
+
+  const categories = await Category.find();
+
+  return categories.map(({ id, name, description }) => ({
+    id,
+    name,
+    description,
+  }));
 }
 
-export function getCategoryById(id) {
-  return categories.find((category) => category.id === id);
+export async function getCategoryById(categoryId) {
+  await dbConnect();
+
+  const category = await Category.findById(categoryId);
+
+  const { id, name, description } = category;
+
+  return { id, name, description };
 }
