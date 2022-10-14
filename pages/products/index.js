@@ -26,6 +26,7 @@ export default function Products({ products }) {
           </li>
         ))}
       </GridList>
+      <Link href={`/products/create`}>Produkt hinzufügen</Link>
     </>
   );
 }

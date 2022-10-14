@@ -2,6 +2,8 @@ import { getProductById } from "../../services/productServices";
 import Head from "next/head";
 import Link from "next/link";
 import styled from "styled-components";
+import Button from "../../components/Button";
+import { router } from "next/router";
 
 export async function getServerSideProps(ctx) {
   const { id } = ctx.params;
@@ -12,7 +14,15 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-export default function Product({ name, description, price, category }) {
+export default function Product({ id, name, description, price, category }) {
+  async function handleDelete() {
+    const response = await fetch(`/api/products/${id}`, {
+      method: "DELETE",
+    });
+    await response.json();
+    router.push("/products");
+  }
+
   return (
     <>
       <Head>
@@ -34,6 +44,13 @@ export default function Product({ name, description, price, category }) {
         </tbody>
       </Table>
       <Link href={`/products`}>Alle Produkte</Link>
+      <Section>
+        <h2>Admin Optionen</h2>
+        <Link href={`/products/${id}/update`}>Produkt bearbeiten</Link>
+        <Button type="button" onClick={handleDelete}>
+          Produkt löschen
+        </Button>
+      </Section>
     </>
   );
 }
@@ -56,4 +73,15 @@ const TdBold = styled.td`
   display: block;
   margin-right: 2rem;
   padding-left: 0;
+`;
+
+const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--text-primary);
+  width: 20rem;
 `;
